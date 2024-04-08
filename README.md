@@ -22,3 +22,8 @@ Successful URL responses should have a 200 code. Ensure that you include error c
 ## License
 
 [License](LICENSE.txt)
+
+## SUBMITION NOTE:
+EB Endpoint: `http://projectstartercode-dev2.us-east-1.elasticbeanstalk.com/`
+
+I've made a basic guard for endpoint /filteredimage, please use post man collection  `udacity-image-processor.postman_collection.json` in root folder
