@@ -11,20 +11,6 @@ const port = process.env.PORT || 8082;
 // Use the body parser middleware for post requests
 app.use(bodyParser.json());
 
-
-// Authentication with basic info
-app.use((req, res, next) => {
-  const auth = { login: "linhbd", password: "20231607" };
-  const b64auth = (req.headers.authorization || "")?.split(" ")?.[1] || "";
-  const [login, password] = Buffer.from(b64auth, "base64")
-    .toString()
-    .split(":");
-  if (login && password && login === auth.login && password === auth.password) {
-    return next();
-  }
-  res.status(401).send("Access Denied");
-});
-
 // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
 // GET /filteredimage?image_url={{URL}}
 // endpoint to filter an image from a public url.
@@ -41,7 +27,17 @@ app.use((req, res, next) => {
 
 /**************************************************************************** */
 
-app.get("/filteredimage", async (req, res) => {
+app.get("/filteredimage", (req, res, next) => {
+  const auth = { login: "linhbd", password: "20231607" };
+  const b64auth = (req.headers.authorization || "")?.split(" ")?.[1] || "";
+  const [login, password] = Buffer.from(b64auth, "base64")
+    .toString()
+    .split(":");
+  if (login && password && login === auth.login && password === auth.password) {
+    return next();
+  }
+  res.status(401).send("Access Denied");
+}, async (req, res) => {
   const imgUrl = req.query.image_url;
   if (!imgUrl) {
     res.status(422).send("image_url query parameter is required");
